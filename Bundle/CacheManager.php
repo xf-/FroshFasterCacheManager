@@ -96,7 +96,7 @@ class CacheManager extends \Shopware\Components\CacheManager
         $output = null;
         exec('find ' . $dir . '/ | wc -l', $output);
 
-        return (int) $output[0];
+        return (int)$output[0];
     }
 
     /**
@@ -169,6 +169,11 @@ class CacheManager extends \Shopware\Components\CacheManager
 
         // verify $cacheDir is part of open_basedir
         if (!$this->checkPathInOpenDirs($cacheDir)) {
+            return false;
+        }
+
+        // verify fits shopware cache path pattern
+        if (!preg_match('/var\/cache\/(production|development)_\d+\//', $cacheDir)) {
             return false;
         }
 
